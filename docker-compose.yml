@@ -1,0 +1,35 @@
+services:
+  ai-toolkit:
+    # Build the image from the Dockerfile in the current directory.
+    build: .
+    # Name the built image.
+    image: ai-cli-toolkit
+    # Name the running container.
+    container_name: ${CONTAINER_NAME}
+    # Automatically restart the container unless it was manually stopped.
+    restart: unless-stopped
+    # Keep STDIN open for an interactive shell.
+    stdin_open: true
+    # Allocate a pseudo-TTY.
+    tty: true
+    # Map host port 3456 to container port 3456.
+    ports:
+      - "3456:3456"
+    # Load environment variables from the .env file.
+    env_file:
+      - .env
+    # Mount volumes.
+    volumes:
+      # Mount a local projects directory (optional, for your work).
+      - ${PROJECTS_DIR}:/projects
+      # Mount the local config directory to the coder's home directory in the container.
+      # This makes configuration persistent.
+      - ./config:/home/coder
+    # Add host.docker.internal to the container's /etc/hosts file.
+    # This is useful for the container to connect to services running on the host machine.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # The main command to run after the entrypoint script has finished.
+    # The entrypoint script will execute this command using 'exec "$@"'.
+    #command: /bin/sh -c "ccr start --no_daemon"
+    command: ["tail", "-f", "/dev/null"]

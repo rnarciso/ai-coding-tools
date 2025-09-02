@@ -1,0 +1,172 @@
+{
+  "LOG": true,
+  "LOG_LEVEL": "debug",
+  "CLAUDE_PATH": "/opt/cli-tools/bin/claude",
+  "HOST": "0.0.0.0",
+  "PORT": 3456,
+  "APIKEY": "${CCR_API_KEY}",
+  "API_TIMEOUT_MS": "600000",
+  "PROXY_URL": "",
+  "transformers": [],
+  "Providers": [
+    {
+      "name": "openrouter",
+      "api_base_url": "https://openrouter.ai/api/v1/chat/completions",
+      "api_key": "${OPENAI_API_KEY}",
+      "headers": {
+        "HTTP-Referer": "https://github.com/musistudio/claude-code-router",
+        "X-Title": "Claude Code Router"
+      },
+      "models": [
+        "deepseek/deepseek-chat-v3.1:free",
+        "z-ai/glm-4.5-air:free",
+        "qwen/qwen3-coder:free",
+        "moonshotai/kimi-k2:free",
+        "mistralai/mistral-small-3.2-24b-instruct:free",
+        "mistralai/devstral-small-2505:free",
+        "meta-llama/llama-3.3-8b-instruct:free",
+        "qwen/qwen3-4b:free",
+        "qwen/qwen3-235b-a22b:free",
+        "meta-llama/llama-4-maverick:free'",
+        "meta-llama/llama-4-scout:free",
+        "deepseek/deepseek-chat-v3-0324:free",
+        "mistralai/mistral-small-3.1-24b-instruct:free",
+        "google/gemini-2.0-flash-exp:free",
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "mistralai/mistral-7b-instruct:free"
+      ],
+      "transformer": {
+        "use": [
+          [
+            "openrouter",
+            {
+              "require_parameters": "true",
+              "allow_fallbacks": "true",
+              "order": "openrouter"
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "name": "deepseek",
+      "api_base_url": "https://api.deepseek.com/chat/completions",
+      "api_key": "${DEEPSEEK_API_KEY}",
+      "models": [
+        "deepseek-chat",
+        "deepseek-reasoner"
+      ],
+      "transformer": {
+        "use": [
+          "deepseek"
+        ],
+        "deepseek-chat": {
+          "use": [
+            "tooluse"
+          ]
+        }
+      }
+    },
+    {
+      "name": "gemini",
+      "api_base_url": "https://generativelanguage.googleapis.com/v1beta/models/",
+      "api_key": "${GOOGLE_API_KEY}",
+      "models": [
+        "gemini-2.5-flash",
+        "gemini-2.5-pro",
+        "gemini-2.0-flash",
+        "gemini-2.5-flash-image-preview"
+      ],
+      "transformer": {
+        "use": [
+          "gemini"
+        ]
+      }
+    }
+  ],
+  "StatusLine": {
+    "enabled": true,
+    "currentStyle": "default",
+    "default": {
+      "modules": [
+        {
+          "type": "gitBranch",
+          "icon": "🌿",
+          "text": "{{gitBranch}}",
+          "color": "bright_green"
+        },
+        {
+          "type": "workDir",
+          "icon": "󰉋",
+          "text": "{{workDirName}}",
+          "color": "bright_blue"
+        },
+        {
+          "type": "script",
+          "icon": "📜",
+          "text": "Script Module",
+          "color": "bright_cyan",
+          "scriptPath": ""
+        },
+        {
+          "type": "model",
+          "icon": "🤖",
+          "text": "{{model}}",
+          "color": "bright_yellow"
+        },
+        {
+          "type": "usage",
+          "icon": "📊",
+          "text": "{{inputTokens}} → {{outputTokens}}",
+          "color": "bright_magenta"
+        }
+      ]
+    },
+    "powerline": {
+      "modules": [
+        {
+          "type": "workDir",
+          "icon": "󰉋",
+          "text": "{{workDirName}}",
+          "color": "bright_blue"
+        },
+        {
+          "type": "gitBranch",
+          "icon": "🌿",
+          "text": "{{gitBranch}}",
+          "color": "bright_green"
+        },
+        {
+          "type": "script",
+          "icon": "📜",
+          "text": "Script Module",
+          "color": "bright_cyan",
+          "scriptPath": ""
+        },
+        {
+          "type": "model",
+          "icon": "🤖",
+          "text": "{{model}}",
+          "color": "bright_yellow"
+        },
+        {
+          "type": "usage",
+          "icon": "📊",
+          "text": "{{inputTokens}} → {{outputTokens}}",
+          "color": "bright_magenta"
+        }
+      ]
+    }
+  },
+  "Router": {
+    "default": "openrouter,deepseek/deepseek-chat-v3.1:free",
+    "background": "openrouter,deepseek/deepseek-chat-v3.1:free",
+    "think": "openrouter,deepseek/deepseek-chat-v3.1:free",
+    "longContext": "openrouter,google/gemini-2.0-flash-exp:free",
+    "longContextThreshold": 100000,
+    "webSearch": "openrouter,deepseek/deepseek-chat-v3.1:free",
+    "image": "gemini,gemini-2.5-flash-image-preview"
+  },
+  "CUSTOM_ROUTER_PATH": "",
+  "forceUseImageAgent": false
+}

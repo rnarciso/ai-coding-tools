@@ -1,0 +1,27 @@
+# Development-specific ignores
+.vscode/
+.idea/
+*.log
+.DS_Store
+coverage.xml
+*.cover
+htmlcov/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+
+# IDE files
+*.swp
+*.swo
+*~
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment files (development only)
+.env.local
+.env.*.local

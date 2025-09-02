@@ -1,0 +1,31 @@
+# --- AI Toolkit Functions (auto-generated) ---
+export AI_TOOLKIT_DIR="%%PROJECT_DIR%%"
+
+# Smart function to check and start the container if needed
+function _is_ai_toolkit_running() {
+    # Check if container is already running, using a placeholder for the name
+    if [ "$(docker ps -q -f name=%%CONTAINER_NAME%%)" ]; then
+        return 0
+    fi
+    read -p "AI Toolkit container ('%%CONTAINER_NAME%%') is not running. Start it now? (y/n) " -n 1 -r REPLY; echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo "Starting container from $AI_TOOLKIT_DIR..."
+        (cd "$AI_TOOLKIT_DIR" && make up > /dev/null 2>&1)
+        # Check again after trying to start
+        if [ "$(docker ps -q -f name=%%CONTAINER_NAME%%)" ]; then
+            echo "Container started successfully."
+            return 0
+        else
+            echo "Error: Failed to start the container." >&2; return 1
+        fi
+    else
+        echo "Operation cancelled." >&2; return 1
+    fi
+}
+
+# Shell functions for AI tools (no changes needed in the command itself)
+function gemini() { _is_ai_toolkit_running && docker exec -it %%CONTAINER_NAME%% gemini "$@" --yolo; }
+function qwen() { _is_ai_toolkit_running && docker exec -it %%CONTAINER_NAME%% qwen "$@" --yolo; }
+function claude() { _is_ai_toolkit_running && docker exec -it %%CONTAINER_NAME%% ccr code "$@" --dangerously-skip-permissions; }
+function claude_code() { _is_ai_toolkit_running && docker exec -it %%CONTAINER_NAME%% claude "$@" --dangerously-skip-permissions; }
+function ccr() { _is_ai_toolkit_running && docker exec -it %%CONTAINER_NAME%% ccr "$@"; }
