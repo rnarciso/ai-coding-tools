@@ -25,8 +25,13 @@ services:
       # Mount the local config directory to the coder's home directory in the container.
       # This makes configuration persistent.
       - ./config:/home/coder
+      # Add access do external docker for allowing debugging of docker apps from AI CLI tools
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+    # Add host docker group to container
+    group_add:
+      - 990   # 👈 matches host docker GID
     # Add host.docker.internal to the container's /etc/hosts file.
-    # This is useful for the container to connect to services running on the host machine.
     extra_hosts:
       - "host.docker.internal:host-gateway"
     # The main command to run after the entrypoint script has finished.

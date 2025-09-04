@@ -38,7 +38,9 @@ RUN groupadd -g 1001 coder \
     && chown -R coder:coder /opt/cli-tools \
     \
     # Allow 'coder' to use sudo without password
-    && echo 'coder ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+    && echo 'coder ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+    && groupadd -g 990 docker \
+    && usermod -aG docker coder
 
 # -------------------------------
 # 4. Entrypoint Configuration
